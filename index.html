@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMM Shartnoma Generator - Professional Hamkorlik Shartnomasi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1d4ed8;
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --success: #10b981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      color: white;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .brand-badge {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-weight: 500;
+    }
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .btn-primary {
+      background-color: #2563eb;
+      color: white;
+    }
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .btn-success {
+      background-color: #10b981;
+      color: white;
+    }
+    .btn-success:hover {
+      background-color: #059669;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    }
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+    }
+    .btn-outline:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    .badge-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .badge-btn:hover {
+      background: #e2e8f0;
+      color: #1e3a8a;
+      border-color: #94a3b8;
+    }
+    .container {
+      display: flex;
+      height: calc(100vh - 72px);
+      overflow: hidden;
+    }
+    /* FORM PANEL */
+    .form-panel {
+      width: 42%;
+      min-width: 380px;
+      background: white;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+    .section-box {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 0.5rem;
+    }
+    .form-group {
+      margin-bottom: 0.85rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.88rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.375rem;
+      background-color: white;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 55px;
+    }
+
+    /* PREVIEW PANEL */
+    .preview-panel {
+      flex: 1;
+      background: #475569;
+      overflow-y: auto;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+    .sheet-wrapper {
+      width: 100%;
+      max-width: 820px;
+    }
+    .contract-sheet {
+      background: white;
+      padding: 40px 48px;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      color: #111827;
+      font-family: 'Merriweather', serif;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .c-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .c-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .c-meta-table {
+      width: 100%;
+      margin-top: 14px;
+      font-style: italic;
+      color: #334155;
+    }
+    .c-meta-table td {
+      border: none;
+      padding: 2px 0;
+    }
+    .c-section-heading {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin: 18px 0 8px 0;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 4px;
+    }
+    .c-paragraph {
+      text-align: justify;
+      margin-bottom: 8px;
+      text-indent: 24px;
+    }
+    .c-sub-item {
+      text-align: justify;
+      margin-bottom: 6px;
+      padding-left: 20px;
+    }
+    .c-badge-val {
+      color: #0369a1;
+      font-weight: 600;
+      text-decoration: underline dotted;
+    }
+    .requisites-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .requisites-table th, .requisites-table td {
+      border: 1px solid #cbd5e1;
+      padding: 10px 14px;
+      vertical-align: top;
+    }
+    .requisites-table th {
+      background-color: #f1f5f9;
+      color: #1e3a8a;
+      font-weight: 700;
+      text-align: center;
+      width: 50%;
+    }
+    .signature-area {
+      margin-top: 25px;
+      border-top: 1px dashed #94a3b8;
+      padding-top: 8px;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: white;
+      }
+      header, .form-panel {
+        display: none !important;
+      }
+      .container {
+        display: block;
+        height: auto;
+      }
+      .preview-panel {
+        background: white;
+        padding: 0;
+      }
+      .contract-sheet {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .container {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+      }
+      .form-panel {
+        width: 100%;
+      }
+      .preview-panel {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-title">
+      <span>📝 SMM Shartnoma Generator</span>
+      <span class="brand-badge">Professional & Yuridik</span>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn btn-outline" onclick="loadSampleData()">
+        <span>🔄 Namunaviy ma'lumotlar</span>
+      </button>
+      <button type="button" class="btn btn-success" id="downloadPdfBtn" onclick="generatePDF()">
+        <span>📥 PDF formatda saqlash</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- CHAP PANEL: FORMA -->
+    <div class="form-panel">
+      <form id="contractForm">
+        <!-- Umumiy ma'lumotlar -->
+        <div class="section-box">
+          <div class="section-title">📌 Umumiy ma'lumotlar</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Shartnoma raqami</label>
+              <input type="text" id="contractNumber" value="SMM-01/2026" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Tuzilgan shahar/joy</label>
+              <input type="text" id="city" value="Toshkent shahri" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tuzilgan sana</label>
+              <input type="text" id="contractDate" value="20-sentabr 2026-yil" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Amal qilish muddati</label>
+              <input type="text" id="expiryDate" value="20-sentabr 2027-yil" oninput="updateLive()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 1. BUYURTMACHI -->
+        <div class="section-box">
+          <div class="section-title">🏢 1. Buyurtmachi (Kompaniya / Firma)</div>
+          <div class="form-group">
+            <label>Kompaniya / Brend nomi</label>
+            <input type="text" id="clientCompany" value="«Modern Business» MCHJ" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Rahbar F.I.SH.</label>
+              <input type="text" id="clientLeader" value="Karimov Alisher Zokirovich" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Hujjat asosi (Nizom/Guvohnoma)</label>
+              <input type="text" id="clientDocBasis" value="Jamiyat Nizomi" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Yuridik manzili</label>
+            <input type="text" id="clientAddress" value="Toshkent sh., Chilonzor tumani, Bunyodkor ko'chasi, 12-uy" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>STIR (INN)</label>
+              <input type="text" id="clientInn" value="308123456" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>H/r (Hisob raqam)</label>
+              <input type="text" id="clientAcc" value="20208000900123456789" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Xizmat ko'rsatuvchi bank va MFO</label>
+              <input type="text" id="clientBank" value="ATB Kapitalbank, MFO: 01036" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Telefon / Aloqa</label>
+              <input type="text" id="clientPhone" value="+998 90 123 45 67" oninput="updateLive()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. IJROCHI -->
+        <div class="section-box">
+          <div class="section-title">🎨 2. Ijrochi (SMM mutaxassisi / Agentlik)</div>
+          <div class="form-group">
+            <label>Agentlik yoki Ijrochi nomi / F.I.SH.</label>
+            <input type="text" id="contractorName" value="«Digital Lead Media» YaTT" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ijrochi vakili / Mutaxassis F.I.SH.</label>
+              <input type="text" id="contractorLeader" value="Ismoilov Sardor Rustam o'g'li" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Hujjat asosi (Guvohnoma №)</label>
+              <input type="text" id="contractorDocBasis" value="Guvohnoma № 589412" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Yuridik manzili</label>
+            <input type="text" id="contractorAddress" value="Toshkent sh., Yunusobod tumani, Amir Temur shox ko'chasi, 45-uy" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>STIR / JSHSHIR</label>
+              <input type="text" id="contractorInn" value="51234567890012" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>H/r yoki karta raqami</label>
+              <input type="text" id="contractorAcc" value="20208000400987654321" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bank va MFO</label>
+              <input type="text" id="contractorBank" value="Ipak Yo'li Banki, MFO: 00444" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Telefon / Aloqa</label>
+              <input type="text" id="contractorPhone" value="+998 99 987 65 43" oninput="updateLive()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. XIZMATLAR VA SAHIFALAR -->
+        <div class="section-box">
+          <div class="section-title">📱 3. Ijtimoiy tarmoqlar va xizmat ko'lami</div>
+          <div class="form-group">
+            <label>Yuritiladigan sahifalar (Instagram, Telegram, Facebook va h.k.)</label>
+            <input type="text" id="socialAccounts" value="Instagram (@modern_uz), Telegram (t.me/modern_business), Facebook (Modern Uz)" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Kontent tasdiqlash muddati (soat/kun)</label>
+              <input type="text" id="reviewTime" value="48 soat" placeholder="Masalan: 24 soat, 48 soat, 3 ish kuni" oninput="updateLive()">
+              <div style="margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap;">
+                <button type="button" class="badge-btn" onclick="setReviewTime('12 soat')">12 soat</button>
+                <button type="button" class="badge-btn" onclick="setReviewTime('24 soat')">24 soat</button>
+                <button type="button" class="badge-btn" onclick="setReviewTime('48 soat')">48 soat</button>
+                <button type="button" class="badge-btn" onclick="setReviewTime('72 soat')">72 soat</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Hisobot taqdim etish chastotasi</label>
+              <input type="text" id="reportingCycle" value="har oy yakunida" placeholder="Masalan: har hafta, har 15 kunda, har oy yakunida" oninput="updateLive()">
+              <div style="margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap;">
+                <button type="button" class="badge-btn" onclick="setReportingCycle('har haftada')">Har hafta</button>
+                <button type="button" class="badge-btn" onclick="setReportingCycle('har 15 kunda')">Har 15 kunda</button>
+                <button type="button" class="badge-btn" onclick="setReportingCycle('har oy yakunida')">Har oy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. MOLIYAVIY SHARTLAR -->
+        <div class="section-box">
+          <div class="section-title">💰 4. Xizmat qiymati va to'lov shartlari</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Oylik xizmat haqi (raqam bilan)</label>
+              <input type="text" id="monthlyPrice" value="6 000 000" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Valyuta</label>
+              <select id="currency" onchange="updateLive()">
+                <option value="so'm" selected>so'm</option>
+                <option value="AQSh dollari">AQSh dollari (USD)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Summa so'z bilan</label>
+            <input type="text" id="monthlyPriceWords" value="Olti million" oninput="updateLive()">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>To'lov shakli</label>
+              <select id="paymentType" onchange="updateLive()">
+                <option value="100% oldindan to'lov (avans)" selected>100% oldindan to'lov (avans)</option>
+                <option value="50% avans va 50% oy yakunida">50% avans va 50% oy yakunida</option>
+                <option value="Oy yakunida hisobot qabul qilingach">Oy yakunida bajarilgan ishlar akti bilan</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Oylik to'lov muddati</label>
+              <input type="text" id="paymentDeadline" value="har oyning 1-5 sanalariga qadar" oninput="updateLive()">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Kechikish uchun kunlik penya (%)</label>
+              <input type="text" id="latePenalty" value="0.1%" oninput="updateLive()">
+            </div>
+            <div class="form-group">
+              <label>Bekor qilishda ogohlantirish muddati</label>
+              <input type="text" id="terminationNotice" value="30 (o'ttiz) kalendar kun" oninput="updateLive()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. QO'SHIMCHA BANDLAR QO'SHISH -->
+        <div class="section-box" style="border: 1px solid #93c5fd; background: #eff6ff;">
+          <div class="section-title" style="color: #1d4ed8;">➕ 5. Shartnomaning istalgan bo'limiga yangi band qo'shish</div>
+          <div class="form-group">
+            <label>Qaysi bo'limga qo'shmoqchisiz?</label>
+            <select id="targetSectionSelect">
+              <option value="sec1">1-bo'lim: Shartnoma maqsadi va predmeti</option>
+              <option value="sec2">2-bo'lim: Ijrochining majburiyat va huquqlari</option>
+              <option value="sec3">3-bo'lim: Buyurtmachining majburiyat va huquqlari</option>
+              <option value="sec4">4-bo'lim: Xizmatlar qiymati va to'lov shartlari</option>
+              <option value="sec5">5-bo'lim: Maxfiylik va tijorat siri (NDA)</option>
+              <option value="sec6">6-bo'lim: Fors-major holatlari va javobgarlik</option>
+              <option value="sec7">7-bo'lim: Shartnomani bekor qilish va nizolar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Yangi band matni:</label>
+            <textarea id="newClauseText" placeholder="Masalan: Ijrochi oyiga kamida 4 ta jonli efir (Live) o'tkazishni texnik jihatdan ta'minlaydi..."></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="addNewClause()">
+            <span>➕ Yangi bandni qo'shish</span>
+          </button>
+
+          <!-- Qo'shilgan bandlar ro'yxati -->
+          <div id="addedClausesList" style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;"></div>
+        </div>
+      </form>
+    </div>
+
+    <!-- O'NG PANEL: LIVE PREVIEW -->
+    <div class="preview-panel">
+      <div class="sheet-wrapper">
+        <div class="contract-sheet" id="contractContent">
+          
+          <div class="c-header">
+            <div class="c-title">SMM (SOCIAL MEDIA MARKETING) XIZMATLARINI KO'RSATISH BO'YICHA<br>HAMKORLIK SHARTNOMASI № <span id="lblContractNumber" class="c-badge-val">SMM-01/2026</span></div>
+            <table class="c-meta-table">
+              <tr>
+                <td style="text-align: left;"><span id="lblCity">Toshkent shahri</span></td>
+                <td style="text-align: right;">«<span id="lblContractDate">20-sentabr 2026-yil</span>»</td>
+              </tr>
+            </table>
+          </div>
+
+          <p class="c-paragraph">
+            Kelgusida «<strong>Buyurtmachi</strong>» deb yuritiluvchi, bir tarafdan <span id="lblClientDocBasis" class="c-badge-val">Jamiyat Nizomi</span> asosida faoliyat ko'rsatuvchi «<strong id="lblClientCompany" class="c-badge-val">«Modern Business» MCHJ</strong>» nomidan rahbar <strong id="lblClientLeader" class="c-badge-val">Karimov Alisher Zokirovich</strong>, va kelgusida «<strong>Ijrochi</strong>» deb yuritiluvchi, ikkinchi tarafdan <span id="lblContractorDocBasis" class="c-badge-val">Guvohnoma № 589412</span> asosida faoliyat ko'rsatuvchi «<strong id="lblContractorName" class="c-badge-val">«Digital Lead Media» YaTT</strong>» nomidan <strong id="lblContractorLeader" class="c-badge-val">Ismoilov Sardor Rustam o'g'li</strong>, birgalikda «<strong>Taraflar</strong>», alohida esa «<strong>Taraf</strong>» deb ataluvchilar, O'zbekiston Respublikasining amaldagi qonunchiligiga muvofiq, mazkur Shartnomani quyidagilar to'g'risida tuzdilar:
+          </p>
+
+          <div class="c-section-heading">1. SHARTNOMA MAQSADI VA PREDMETI</div>
+          <p class="c-paragraph">
+            <strong>1.1.</strong> Mazkur Shartnomaga muvofiq, Ijrochi Buyurtmachining topshirig'iga binoan SMM (Social Media Marketing) xizmatlarini ko'rsatish, Buyurtmachi esa ushbu xizmatlarni qabul qilish hamda belgilangan tartibda haq to'lash majburiyatini oladi.
+          </p>
+          <p class="c-paragraph">
+            <strong>1.2.</strong> Ijrochi tomonidan yuritiladigan ijtimoiy tarmoqlar va sahifalar: <span id="lblSocialAccounts" class="c-badge-val">Instagram (@modern_uz), Telegram (t.me/modern_business), Facebook (Modern Uz)</span>.
+          </p>
+          <p class="c-paragraph"><strong>1.3.</strong> Xizmatlarning umumiy tarkibi va ko'lami quyidagilarni o'z ichiga oladi:</p>
+          <div class="c-sub-item"><strong>1.3.1.</strong> Brendning ijtimoiy tarmoqlardagi umumiy marketing va vizual strategiyasini ishlab chiqish;</div>
+          <div class="c-sub-item"><strong>1.3.2.</strong> Tasdiqlangan muddatga mo'ljallangan muntazam kontent-reja (mavzular, rubrikalar, postlar matnlari) tuzish;</div>
+          <div class="c-sub-item"><strong>1.3.3.</strong> Yuqori sifatli grafik dizaynlar, bannerlar, infografikalar, karusellar va vizual materiallarni tayyorlash;</div>
+          <div class="c-sub-item"><strong>1.3.4.</strong> Qisqa formatli video kontentlarni (Reels, Stories, Shorts/TikTok) ssenariylashtirish, montaj qilish va e'lon qilish;</div>
+          <div class="c-sub-item"><strong>1.3.5.</strong> Jalb qiluvchi va sotuvchi kopirayting matnlarini yozish;</div>
+          <div class="c-sub-item"><strong>1.3.6.</strong> Maqsadli (target) reklama kampaniyalarini sozlash, monitoring qilish va doimiy optimallashtirish;</div>
+          <div class="c-sub-item"><strong>1.3.7.</strong> <span id="lblReportingCycle" class="c-badge-val">har oy yakunida</span> batafsil analitik hisobot taqdim etish.</div>
+          <div id="custom-clauses-sec1"></div>
+
+          <div class="c-section-heading">2. IJROCHINING HUQUQ VA MAJBURIYATLARI</div>
+          <p class="c-paragraph"><strong>2.1. Ijrochining majburiyatlari:</strong></p>
+          <div class="c-sub-item"><strong>2.1.1.</strong> Xizmatlarni yuqori professionalizm va sifat standartlari asosida o'z vaqtida bajarish;</div>
+          <div class="c-sub-item"><strong>2.1.2.</strong> Yangi davr boshlanishidan kamida 3 (uch) ish kuni oldin kontent-rejani Buyurtmachiga tasdiqlash uchun kiritish;</div>
+          <div class="c-sub-item"><strong>2.1.3.</strong> Buyurtmachi tomonidan tasdiqlangan kontent-reja va media-rejaga qat'iy amal qilish;</div>
+          <div class="c-sub-item"><strong>2.1.4.</strong> Target reklama byudjetidan unumli, tejamkor va belgilangan maqsadlar doirasida foydalanish;</div>
+          <div class="c-sub-item"><strong>2.1.5.</strong> Mazkur Shartnomaning 5-bo'limiga muvofiq, Buyurtmachining barcha tijorat ma'lumotlari hamda akkaunt parollarining to'liq maxfiyligini (NDA) saqlash;</div>
+          <div class="c-sub-item"><strong>2.1.6.</strong> Sahifalarda qonunchilikka zid yoki uchinchi shaxslarning mualliflik huquqini buzuvchi kontent joylashtirilishiga yo'l qo'ymaslik.</div>
+          <p class="c-paragraph"><strong>2.2. Ijrochining huquqlari:</strong></p>
+          <div class="c-sub-item"><strong>2.2.1.</strong> Bajarilgan xizmatlar uchun Shartnomada belgilangan muddatda to'liq xizmat haqini talab qilish;</div>
+          <div class="c-sub-item"><strong>2.2.2.</strong> Ishlarni sifatli bajarish uchun kerak bo'lgan ma'lumotlar, mahsulot tafsilotlari va media-fayllarni Buyurtmachidan talab qilish;</div>
+          <div class="c-sub-item"><strong>2.2.3.</strong> Buyurtmachi tasdiqlashni kechiktirgan hollarda e'lon muddatlarini mos ravishda uzaytirish;</div>
+          <div class="c-sub-item"><strong>2.2.4.</strong> Bajarilgan loyiha materiallarini o'z portfoliosida namunaviy keys sifatida namoyish etish (agar NDA doirasidagi maxfiy savdo ma'lumotlari bo'lmasa).</div>
+          <div id="custom-clauses-sec2"></div>
+
+          <div class="c-section-heading">3. BUYURTMACHINING HUQUQ VA MAJBURIYATLARI</div>
+          <p class="c-paragraph"><strong>3.1. Buyurtmachining majburiyatlari:</strong></p>
+          <div class="c-sub-item"><strong>3.1.1.</strong> Taqdim etilgan kontent-reja, ssenariy va dizayn maketlarini <span id="lblReviewTime" class="c-badge-val">48 soat</span> ichida ko'rib chiqish hamda tasdiqlash yoki aniq asoslangan taklif/e'tirozlarini bildirish;</div>
+          <div class="c-sub-item"><strong>3.1.2.</strong> Agar belgilangan muddat ichida yozma e'tiroz bildirilmasa, materiallar Buyurtmachi tomonidan avtomatik tasdiqlangan hisoblanadi;</div>
+          <div class="c-sub-item"><strong>3.1.3.</strong> Kontent yaratish uchun zarur bo'lgan xomashyo (foto/video materiallar, mahsulot tavsiflari, aksiya shartlari)ni o'z vaqtida Ijrochiga taqdim etish;</div>
+          <div class="c-sub-item"><strong>3.1.4.</strong> <strong>Target (reklama) byudjetini o'z hisobidan, xizmat haqidan mutlaqo alohida ravishda</strong> o'z vaqtida reklama kabinetlariga to'lab borish;</div>
+          <div class="c-sub-item"><strong>3.1.5.</strong> Ko'rsatilgan xizmatlar uchun oylik to'lovlarni belgilangan muddat va hajmda o'tkazib berish;</div>
+          <div class="c-sub-item"><strong>3.1.6.</strong> Sahifalarga kirish uchun adminlik/menejerlik ruxsatnomalarini moneliksiz taqdim etish.</div>
+          <p class="c-paragraph"><strong>3.2. Buyurtmachining huquqlari:</strong></p>
+          <div class="c-sub-item"><strong>3.2.1.</strong> Xizmatlarning borishi va strategiyaga mosligini istalgan vaqtda tekshirish hamda oraliq hisobotlarni so'rash;</div>
+          <div class="c-sub-item"><strong>3.2.2.</strong> Reklama kampaniyalari ko'rsatkichlari bilan to'g'ridan-to'g'ri tanishib borish.</div>
+          <div id="custom-clauses-sec3"></div>
+
+          <div class="c-section-heading">4. XIZMATLAR QIYMATI VA TO'LOV SHARTLARI</div>
+          <p class="c-paragraph">
+            <strong>4.1.</strong> Mazkur Shartnoma bo'yicha Ijrochi tomonidan 1 (bir) kalendar oyida ko'rsatiladigan SMM xizmatlarining umumiy qiymati <strong id="lblMonthlyPrice" class="c-badge-val">6 000 000</strong> (<span id="lblMonthlyPriceWords" class="c-badge-val">Olti million</span>) <span id="lblCurrency" class="c-badge-val">so'm</span>ni tashkil etadi.
+          </p>
+          <p class="c-paragraph">
+            <strong>4.2.</strong> To'lov tartibi: <strong id="lblPaymentType" class="c-badge-val">100% oldindan to'lov (avans)</strong> shaklida, <span id="lblPaymentDeadline" class="c-badge-val">har oyning 1-5 sanalariga qadar</span> Ijrochining hisob-raqamiga to'liq o'tkaziladi.
+          </p>
+          <p class="c-paragraph">
+            <strong>4.3.</strong> Rasmiy reklama byudjeti (Meta Ads, Telegram Ads, Google Ads va b.) ushbu xizmat narxiga kirmaydi va Buyurtmachi tomonidan mustaqil moliyalashtiriladi.
+          </p>
+          <p class="c-paragraph">
+            <strong>4.4.</strong> Har oy yakunida bajarilgan ishlar bo'yicha Dalolatnoma (Akt) yoki EHF rasmiylashtiriladi. Buyurtmachi aktni 3 (uch) ish kuni ichida tasdiqlashi shart.
+          </p>
+          <p class="c-paragraph">
+            <strong>4.5.</strong> Agar Buyurtmachi to'lovni belgilangan muddatda asossiz kechiktirsa, kechiktirilgan har bir kun uchun to'lanmagan summaning <span id="lblLatePenalty" class="c-badge-val">0.1%</span> miqdorida penya to'laydi (lekin umumiy to'lovning 10%idan oshmagan holda).
+          </p>
+          <p class="c-paragraph">
+            <strong>4.6.</strong> To'lov 5 (besh) bank kunidan ortiq kechiktirilgan taqdirda, Ijrochi reklama kampaniyalarini va xizmatlarni vaqtincha to'xtatib turishga haqli.
+          </p>
+          <div id="custom-clauses-sec4"></div>
+
+          <div class="c-section-heading">5. MAXFIYLIK VA TIJORAT SIRI (NDA)</div>
+          <p class="c-paragraph">
+            <strong>5.1.</strong> Taraflar hamkorlik davomida bir-birlarining tijorat sirlari, akkaunt login-parollari, mijozlar bazasi va moliyaviy hisob-kitoblarini sir saqlash majburiyatini oladilar.
+          </p>
+          <p class="c-paragraph">
+            <strong>5.2.</strong> Maxfiy ma'lumotlarni uchinchi shaxslarga berish qat'iyan taqiqlanadi. Ushbu majburiyat Shartnoma bekor qilingandan so'ng ham 3 (uch) yil davomida kuchda qoladi.
+          </p>
+          <div id="custom-clauses-sec5"></div>
+
+          <div class="c-section-heading">6. FORS-MAJOR HOLATLARI VA JAVOBGARLIK</div>
+          <p class="c-paragraph">
+            <strong>6.1.</strong> Yengib bo'lmas kuchlar (tabiiy ofatlar, davlat organlari qarorlari, urushlar, shuningdek xalqaro ijtimoiy tarmoq tizimlarining global uzilishlari yoki O'zbekiston hududida cheklanishi) oqibatida majburiyatlar bajarilmasa, Taraflar javobgarlikdan ozod etiladi.
+          </p>
+          <p class="c-paragraph">
+            <strong>6.2.</strong> Fors-major yuzaga kelganda, Taraf 3 (uch) ish kuni ichida ikkinchi Tarafni yozma xabardor qilishi shart.
+          </p>
+          <p class="c-paragraph">
+            <strong>6.3.</strong> Ijrochi faqat marketing va auditoriya jalb qilish samaradorligiga javobgar bo'lib, Buyurtmachining mahsuloti sifati yoki sotuv menejerlarining mijozlarga xizmat ko'rsatish yakuniy natijalari uchun javobgar hisoblanmaydi.
+          </p>
+          <div id="custom-clauses-sec6"></div>
+
+          <div class="c-section-heading">7. SHARTNOMANI BEKOR QILISH VA NIZOLARNI HAL ETISH</div>
+          <p class="c-paragraph">
+            <strong>7.1.</strong> Mazkur Shartnoma imzolangan paytdan boshlab kuchga kiradi va <span id="lblExpiryDate" class="c-badge-val">20-sentabr 2027-yil</span>ga qadar amal qiladi.
+          </p>
+          <p class="c-paragraph">
+            <strong>7.2.</strong> Har qanday Taraf Shartnomani muddatidan oldin bekor qilish niyatida bo'lsa, ikkinchi Tarafni kamida <span id="lblTerminationNotice" class="c-badge-val">30 (o'ttiz) kalendar kun</span> oldin yozma xabardor qilishi shart. Bunda amalda bajarilgan ishlar bo'yicha to'liq hisob-kitob qilinadi.
+          </p>
+          <p class="c-paragraph">
+            <strong>7.3.</strong> Kelib chiqadigan barcha nizolar avvalo o'zaro muzokaralar va da'vo xati yuborish yo'li bilan (10 kun ichida javob qaytarish sharti bilan), murosaga erishilmasa, O'zbekiston Respublikasi qonunchiligi asosida iqtisodiy sudda hal etiladi.
+          </p>
+          <div id="custom-clauses-sec7"></div>
+
+          <div class="c-section-heading">8. TARAFLARNING YURIDIK MANZILLARI VA REKVIZITLARI</div>
+          <table class="requisites-table">
+            <thead>
+              <tr>
+                <th>BUYURTMACHI</th>
+                <th>IJROCHI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong>Tashkilot:</strong> <span id="tblClientCompany">«Modern Business» MCHJ</span><br>
+                  <strong>Manzil:</strong> <span id="tblClientAddress">Toshkent sh., Chilonzor tumani, Bunyodkor ko'chasi, 12-uy</span><br>
+                  <strong>STIR (INN):</strong> <span id="tblClientInn">308123456</span><br>
+                  <strong>H/r:</strong> <span id="tblClientAcc">20208000900123456789</span><br>
+                  <strong>Bank:</strong> <span id="tblClientBank">ATB Kapitalbank, MFO: 01036</span><br>
+                  <strong>Tel:</strong> <span id="tblClientPhone">+998 90 123 45 67</span>
+                  <div class="signature-area">
+                    <strong>Rahbar:</strong> ________________ / <span id="tblClientLeader">Karimov Alisher Zokirovich</span><br><br>
+                    <strong>M.O'. (Muhr o'rni)</strong>
+                  </div>
+                </td>
+                <td>
+                  <strong>Ijrochi / Agentlik:</strong> <span id="tblContractorName">«Digital Lead Media» YaTT</span><br>
+                  <strong>Manzil:</strong> <span id="tblContractorAddress">Toshkent sh., Yunusobod tumani, Amir Temur shox ko'chasi, 45-uy</span><br>
+                  <strong>STIR / JSHSHIR:</strong> <span id="tblContractorInn">51234567890012</span><br>
+                  <strong>H/r (karta):</strong> <span id="tblContractorAcc">20208000400987654321</span><br>
+                  <strong>Bank:</strong> <span id="tblContractorBank">Ipak Yo'li Banki, MFO: 00444</span><br>
+                  <strong>Tel:</strong> <span id="tblContractorPhone">+998 99 987 65 43</span>
+                  <div class="signature-area">
+                    <strong>Ijrochi:</strong> ________________ / <span id="tblContractorLeader">Ismoilov Sardor Rustam o'g'li</span><br><br>
+                    <strong>M.O'. (Mavjud bo'lsa)</strong>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateLive() {
+      // General
+      document.getElementById('lblContractNumber').innerText = document.getElementById('contractNumber').value || '____';
+      document.getElementById('lblCity').innerText = document.getElementById('city').value || '_________';
+      document.getElementById('lblContractDate').innerText = document.getElementById('contractDate').value || '_________';
+      document.getElementById('lblExpiryDate').innerText = document.getElementById('expiryDate').value || '_________';
+
+      // Client
+      const cComp = document.getElementById('clientCompany').value || '________________';
+      const cLeader = document.getElementById('clientLeader').value || '________________';
+      const cBasis = document.getElementById('clientDocBasis').value || 'Nizom';
+      const cAddr = document.getElementById('clientAddress').value || '________________';
+      const cInn = document.getElementById('clientInn').value || '________________';
+      const cAcc = document.getElementById('clientAcc').value || '________________';
+      const cBank = document.getElementById('clientBank').value || '________________';
+      const cPhone = document.getElementById('clientPhone').value || '________________';
+
+      document.getElementById('lblClientCompany').innerText = cComp;
+      document.getElementById('lblClientLeader').innerText = cLeader;
+      document.getElementById('lblClientDocBasis').innerText = cBasis;
+      document.getElementById('tblClientCompany').innerText = cComp;
+      document.getElementById('tblClientLeader').innerText = cLeader;
+      document.getElementById('tblClientAddress').innerText = cAddr;
+      document.getElementById('tblClientInn').innerText = cInn;
+      document.getElementById('tblClientAcc').innerText = cAcc;
+      document.getElementById('tblClientBank').innerText = cBank;
+      document.getElementById('tblClientPhone').innerText = cPhone;
+
+      // Contractor
+      const kName = document.getElementById('contractorName').value || '________________';
+      const kLeader = document.getElementById('contractorLeader').value || '________________';
+      const kBasis = document.getElementById('contractorDocBasis').value || 'Guvohnoma';
+      const kAddr = document.getElementById('contractorAddress').value || '________________';
+      const kInn = document.getElementById('contractorInn').value || '________________';
+      const kAcc = document.getElementById('contractorAcc').value || '________________';
+      const kBank = document.getElementById('contractorBank').value || '________________';
+      const kPhone = document.getElementById('contractorPhone').value || '________________';
+
+      document.getElementById('lblContractorName').innerText = kName;
+      document.getElementById('lblContractorLeader').innerText = kLeader;
+      document.getElementById('lblContractorDocBasis').innerText = kBasis;
+      document.getElementById('tblContractorName').innerText = kName;
+      document.getElementById('tblContractorLeader').innerText = kLeader;
+      document.getElementById('tblContractorAddress').innerText = kAddr;
+      document.getElementById('tblContractorInn').innerText = kInn;
+      document.getElementById('tblContractorAcc').innerText = kAcc;
+      document.getElementById('tblContractorBank').innerText = kBank;
+      document.getElementById('tblContractorPhone').innerText = kPhone;
+
+      // Services & Details
+      document.getElementById('lblSocialAccounts').innerText = document.getElementById('socialAccounts').value || 'Instagram, Telegram';
+      document.getElementById('lblReviewTime').innerText = document.getElementById('reviewTime').value;
+      document.getElementById('lblReportingCycle').innerText = document.getElementById('reportingCycle').value;
+
+      // Financials
+      document.getElementById('lblMonthlyPrice').innerText = document.getElementById('monthlyPrice').value || '0';
+      document.getElementById('lblMonthlyPriceWords').innerText = document.getElementById('monthlyPriceWords').value || 'Nol';
+      document.getElementById('lblCurrency').innerText = document.getElementById('currency').value;
+      document.getElementById('lblPaymentType').innerText = document.getElementById('paymentType').value;
+      document.getElementById('lblPaymentDeadline').innerText = document.getElementById('paymentDeadline').value;
+      document.getElementById('lblLatePenalty').innerText = document.getElementById('latePenalty').value;
+      document.getElementById('lblTerminationNotice').innerText = document.getElementById('terminationNotice').value;
+    }
+
+    function generatePDF() {
+      const btn = document.getElementById('downloadPdfBtn');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '<span>⏳ PDF tayyorlanmoqda...</span>';
+      btn.style.opacity = '0.7';
+
+      const element = document.getElementById('contractContent');
+      const contractNum = document.getElementById('contractNumber').value || 'SMM_Shartnoma';
+      const filename = 'SMM_Shartnoma_' + contractNum.replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+
+      const opt = {
+        margin: [12, 12, 12, 12],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opt).from(element).save().then(() => {
+        btn.innerHTML = oldText;
+        btn.style.opacity = '1';
+      }).catch(err => {
+        console.error(err);
+        alert('PDF yaratishda xatolik yuz berdi. Iltimos brauzerning chop etish (Ctrl + P) funksiyasidan foydalaning.');
+        btn.innerHTML = oldText;
+        btn.style.opacity = '1';
+      });
+    }
+
+    function setReviewTime(val) {
+      document.getElementById('reviewTime').value = val;
+      updateLive();
+    }
+
+    function setReportingCycle(val) {
+      document.getElementById('reportingCycle').value = val;
+      updateLive();
+    }
+
+    let customClauses = [];
+
+    const sectionPrefixes = {
+      'sec1': '1.4.',
+      'sec2': '2.3.',
+      'sec3': '3.3.',
+      'sec4': '4.7.',
+      'sec5': '5.4.',
+      'sec6': '6.4.',
+      'sec7': '7.4.'
+    };
+
+    const sectionNames = {
+      'sec1': '1-bo\'lim',
+      'sec2': '2-bo\'lim',
+      'sec3': '3-bo\'lim',
+      'sec4': '4-bo\'lim',
+      'sec5': '5-bo\'lim',
+      'sec6': '6-bo\'lim',
+      'sec7': '7-bo\'lim'
+    };
+
+    function addNewClause() {
+      const sec = document.getElementById('targetSectionSelect').value;
+      const text = document.getElementById('newClauseText').value.trim();
+
+      if (!text) {
+        alert('Iltimos, avval qo\'shiladigan yangi band matnini yozing!');
+        return;
+      }
+
+      customClauses.push({
+        id: Date.now(),
+        section: sec,
+        text: text
+      });
+
+      document.getElementById('newClauseText').value = '';
+      renderCustomClauses();
+    }
+
+    function removeClause(id) {
+      customClauses = customClauses.filter(c => c.id !== id);
+      renderCustomClauses();
+    }
+
+    function renderCustomClauses() {
+      // 1. Tozalash
+      ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7'].forEach(s => {
+        const container = document.getElementById('custom-clauses-' + s);
+        if (container) container.innerHTML = '';
+      });
+
+      // 2. Har bir bo'lim bo'yicha hisoblagich bilan render qilish
+      const secCounters = {
+        'sec1': 4,
+        'sec2': 3,
+        'sec3': 3,
+        'sec4': 7,
+        'sec5': 4,
+        'sec6': 4,
+        'sec7': 4
+      };
+
+      customClauses.forEach(clause => {
+        const targetContainer = document.getElementById('custom-clauses-' + clause.section);
+        if (targetContainer) {
+          const secNum = clause.section.replace('sec', '');
+          const clauseNum = `${secNum}.${secCounters[clause.section]}.`;
+          secCounters[clause.section]++;
+
+          const div = document.createElement('div');
+          div.className = 'c-paragraph';
+          div.style.backgroundColor = '#f0fdf4';
+          div.style.padding = '4px 8px';
+          div.style.borderRadius = '4px';
+          div.style.borderLeft = '3px solid #10b981';
+          div.style.marginBottom = '6px';
+          div.innerHTML = `<strong>${clauseNum}</strong> ${clause.text}`;
+          targetContainer.appendChild(div);
+        }
+      });
+
+      // 3. Chap paneldagi ro'yxatni yangilash
+      const listContainer = document.getElementById('addedClausesList');
+      if (listContainer) {
+        listContainer.innerHTML = '';
+        if (customClauses.length === 0) {
+          listContainer.innerHTML = '<span style="font-size: 0.78rem; color: #64748b; font-style: italic;">Hozircha qo\'shimcha maxsus bandlar kiritilmagan.</span>';
+        } else {
+          customClauses.forEach(clause => {
+            const item = document.createElement('div');
+            item.style.display = 'flex';
+            item.style.justifyContent = 'space-between';
+            item.style.alignItems = 'center';
+            item.style.background = 'white';
+            item.style.padding = '6px 8px';
+            item.style.borderRadius = '4px';
+            item.style.border = '1px solid #cbd5e1';
+            item.style.fontSize = '0.78rem';
+
+            item.innerHTML = `
+              <div style="flex: 1; margin-right: 8px;">
+                <span style="font-weight: 700; color: #1d4ed8;">[${sectionNames[clause.section]}]:</span>
+                <span>${clause.text.substring(0, 60)}${clause.text.length > 60 ? '...' : ''}</span>
+              </div>
+              <button type="button" onclick="removeClause(${clause.id})" style="background: #ef4444; color: white; border: none; padding: 2px 6px; border-radius: 3px; cursor: pointer;">✕</button>
+            `;
+            listContainer.appendChild(item);
+          });
+        }
+      }
+    }
+
+    function loadSampleData() {
+      document.getElementById('contractNumber').value = 'SMM-02/2026';
+      document.getElementById('city').value = 'Samarqand shahri';
+      document.getElementById('contractDate').value = '21-sentabr 2026-yil';
+      document.getElementById('clientCompany').value = '«Silk Road Goods» MCHJ';
+      document.getElementById('clientLeader').value = 'Rahimov Bekzod Omonovich';
+      document.getElementById('monthlyPrice').value = '8 500 000';
+      document.getElementById('monthlyPriceWords').value = 'Sakkiz million besh yuz ming';
+      updateLive();
+    }
+
+    // Dastlabki yuklanish
+    updateLive();
+  </script>
+</body>
+</html>
